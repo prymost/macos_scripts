@@ -17,8 +17,8 @@ BREW_PACKS=(
   zsh
   zsh-autosuggestions
 )
-#echo "Installing packages..."
-# brew install ${BREW_PACKS[@]}
+echo "Installing packages..."
+brew install ${BREW_PACKS[@]}
 
 # use zsh by default
 # chsh -s /usr/local/bin/zsh
@@ -37,6 +37,7 @@ CASKS=(
   docker
   google-chrome
   iterm2
+  notion
   sourcetree
   rectangle
   visual-studio-code
