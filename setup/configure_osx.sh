@@ -11,8 +11,8 @@ echo "Disable 'natural' (Lion-style) scrolling"
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
 echo "Accelerate cursor"
-defaults write NSGlobalDomain KeyRepeat -int 0
-defaults write NSGlobalDomain InitialKeyRepeat -int 10
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 25
 
 echo "Disable auto-correct"
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -34,7 +34,9 @@ echo "Turn on key repeats"
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 echo "Set default screenshot location"
-defaults write com.apple.screencapture location -string "${HOME}/Desktop"
+MY_SCREENSHOTS_FOLDER="${HOME}/Desktop/Screenshots"
+mkdir $MY_SCREENSHOTS_FOLDER
+defaults write com.apple.screencapture location -string "${MY_SCREENSHOTS_FOLDER}"
 
 
 ###############################################################################

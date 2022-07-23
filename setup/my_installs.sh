@@ -20,14 +20,23 @@ BREW_PACKS=(
 echo "Installing packages..."
 brew install ${BREW_PACKS[@]}
 
+# Ruby Setup
+brew install rbenv ruby-build
+rbenv init
+# Verify that rbenv is properly set up using this rbenv-doctor script
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-doctor | bash
+# For M1 Mac ruby installs, need to specify openssl directory
+# RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1" rbenv install 2.6.10
+
 # use zsh by default
 # chsh -s /usr/local/bin/zsh
 
 # Oh My Zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 # Zrefresh
-source ~/.zshrc
+# source ~/.zshrc
 
 echo "Cleaning up..."
 brew cleanup
@@ -35,7 +44,7 @@ brew cleanup
 CASKS=(
   brave-browser
   docker
-  google-chrome
+#  google-chrome
   iterm2
   notion
   sourcetree
@@ -53,6 +62,7 @@ defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 
 # Use VSCode to edit git prompts
 git config --global core.editor "code --wait"
+git config remote.origin.prune true
 
 # NPM packager
 # echo "Installing cask apps..."
