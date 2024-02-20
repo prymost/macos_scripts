@@ -1,9 +1,9 @@
 #!/bin/bash
 
 PROFILE_NAME=$1
-mkdir -p "/Applications/Google Chrome $1.app/Contents/MacOS"
+mkdir -p "/Applications/Google Chrome $PROFILE_NAME.app/Contents/MacOS"
 
-F="/Applications/Google Chrome $1.app/Contents/MacOS/Google Chrome $1"
+F="/Applications/Google Chrome $PROFILE_NAME.app/Contents/MacOS/Google Chrome $PROFILE_NAME"
 cat > "$F" <<\EOF
 #!/bin/bash
 

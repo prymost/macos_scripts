@@ -61,13 +61,15 @@ brew install --cask ${CASKS[@]}
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 
 # Use VSCode to edit git prompts
-git config --global core.editor "code --wait"
-git config remote.origin.prune true
+git config --global push.autoSetupRemote true
+git config --global push.default current
+git config --global core.editor "code -n -w"
+git config --global remote.origin.prune true
 
 # NPM packager
 # echo "Installing cask apps..."
 # NPM_GLOBAL_PACKS=(
-#   typescript 
-#   ts-node 
+#   typescript
+#   ts-node
 # )
 # npm i -g ${NPM_GLOBAL_PACKS[@]}
