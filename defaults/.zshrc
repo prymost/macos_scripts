@@ -79,7 +79,9 @@ plugins=(git aws docker zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+# autosuggestions
+export WORDCHARS='_'
+bindkey "^ " forward-word
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
