@@ -35,7 +35,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 echo "Set default screenshot location"
 MY_SCREENSHOTS_FOLDER="${HOME}/Desktop/Screenshots"
-mkdir $MY_SCREENSHOTS_FOLDER
+mkdir -p "$MY_SCREENSHOTS_FOLDER"
 defaults write com.apple.screencapture location -string "${MY_SCREENSHOTS_FOLDER}"
 
 
@@ -74,7 +74,7 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
 defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
-# # Disable the warning before emptying the Trash
+# Disable the warning before emptying the Trash
 defaults write com.apple.finder WarnOnEmptyTrash -bool false
 
 # Set $HOME as the default location for new Finder windows
@@ -116,4 +116,46 @@ defaults write com.apple.commerce AutoUpdate -bool true
 # Only use UTF-8 in Terminal.app
 defaults write com.apple.terminal StringEncodings -array 4
 
-mkdir "$HOME/Workspace"
+###############################################################################
+# Modern macOS Features (Sequoia/Ventura+)                                   #
+###############################################################################
+
+# Control Center - Show Battery Percentage
+defaults write ~/Library/Preferences/ByHost/com.apple.controlcenter.plist BatteryShowPercentage -bool true
+
+# Disable Stage Manager by default (can be enabled manually if desired)
+defaults write com.apple.WindowManager GloballyEnabled -bool false
+
+# Configure Notification Center - Reduce notification grouping
+defaults write com.apple.notificationcenterui BannerTime -int 5
+
+# Privacy - Disable app analytics sharing
+defaults write com.apple.applicationaccess.plist DisableAppAnalytics -bool true
+
+# Disable Siri suggestions in Spotlight
+defaults write com.apple.lookup.shared LookupSuggestionsDisabled -bool true
+
+###############################################################################
+# Dock & Mission Control                                                      #
+###############################################################################
+
+# Set the icon size of Dock items
+defaults write com.apple.dock tilesize -int 36
+
+# Don't animate opening applications from the Dock
+defaults write com.apple.dock launchanim -bool false
+
+# Speed up Mission Control animations
+defaults write com.apple.dock expose-animation-duration -float 0.1
+
+# Make Dock icons of hidden applications translucent
+defaults write com.apple.dock showhidden -bool true
+
+###############################################################################
+# Energy & Performance                                                        #
+###############################################################################
+
+# Prevent Photos from opening automatically when devices are plugged in
+defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
+
+mkdir -p "$HOME/Workspace"

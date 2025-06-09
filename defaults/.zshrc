@@ -1,5 +1,14 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Modern Homebrew path handling for both Intel and Apple Silicon
+if [[ $(uname -m) == "arm64" ]]; then
+    # Apple Silicon
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+else
+    # Intel
+    export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+fi
+
+export PATH=$HOME/bin:$PATH
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
@@ -112,9 +121,13 @@ alias zrefresh="source ~/.zshrc"
 alias gcm="git checkout master"
 alias rbtom="git rebase -i origin/master"
 
-# Python3 by default
-alias python="/usr/bin/python3"
-alias pip="/usr/bin/pip3"
+# Python3 by default (updated for modern Homebrew Python)
+if command -v python3 &> /dev/null; then
+    alias python="python3"
+fi
+if command -v pip3 &> /dev/null; then
+    alias pip="pip3"
+fi
 
 # Pipenv
 alias prp="pipenv run python"
