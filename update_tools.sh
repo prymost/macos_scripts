@@ -16,8 +16,8 @@ if [[ -f "$BREWFILE_PATH" ]]; then
     echo "Installing any new packages from Brewfile..."
     brew bundle install --file="$BREWFILE_PATH"
 
-    echo "Cleaning up packages not in Brewfile..."
-    brew bundle cleanup --file="$BREWFILE_PATH" --force
+    # echo "Cleaning up packages not in Brewfile..."
+    # brew bundle cleanup --file="$BREWFILE_PATH" --force
 fi
 
 echo "💎 ***** Ruby Gems Update *****"
