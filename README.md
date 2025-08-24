@@ -1,56 +1,18 @@
-# macOS Setup Scripts
+# Bootstrap Scripts Collection
 
-My pesonal scripts for setting up and maintaining a new MacBook with my preferred configuration.
+This repository contains automated setup and maintenance scripts for multiple platforms.
 
-## 🚀 Quick Start
+## Platform-Specific Documentation
 
-1. **Run compatibility check** (recommended):
-   ```bash
-   ./check_compatibility.sh
-   ```
+### 🍎 macOS
+See [mac/README.md](mac/README.md) for macOS bootstrap and maintenance scripts.
 
-2. **Run full bootstrap**:
-   ```bash
-   ./bootstrap.sh
-   ```
+### 🪟 Windows
+See [windows/README.md](windows/README.md) for Windows 11 bootstrap and maintenance scripts.
 
-## 📁 Script Overview
+### 🐧 WSL/Linux
+See [windows/wsl_scripts/README.md](windows/wsl_scripts/README.md) for WSL and Linux setup scripts.
 
-- **`bootstrap.sh`** - Main entry point that orchestrates the entire setup
-- **`check_compatibility.sh`** - Validates system compatibility before setup
-- **`setup/initial.sh`** - Installs Xcode tools, Homebrew, and core utilities
-- **`setup/my_installs.sh`** - Installs applications and packages via Homebrew
-- **`setup/configure_osx.sh`** - Configures macOS system preferences
-- **`setup/restore.sh`** - Restores backed-up configuration files
-- **`Brewfile`** - Modern Homebrew bundle for package management
+## Quick Start
 
-## 💻 Compatibility
-
-- ✅ **macOS 15.5 (Sequoia)** - Fully tested and compatible
-- ✅ **Apple Silicon & Intel Macs** - Universal support
-- ✅ **zsh shell** - Optimized for modern macOS default shell
-
-## 🛠 Alternative Usage
-
-### Using Brewfile Only
-```bash
-brew bundle install
-```
-
-### Running Individual Scripts
-```bash
-# Setup only core tools
-./setup/initial.sh
-
-# Install applications only
-./setup/my_installs.sh
-
-# Configure system settings only
-./setup/configure_osx.sh
-```
-
-## 🔄 Maintenance
-
-- **`update_tools.sh`** - Update Homebrew packages
-- **`backup.sh`** - Backup current configuration
-- Run `brew bundle cleanup` to remove unlisted packages
+Choose your platform and follow the instructions in the corresponding README file.
