@@ -17,12 +17,10 @@ brew "zsh"
 brew "zsh-autosuggestions"
 
 # Desktop Applications
-cask "firefox"
+cask "brave-browser"
 cask "docker"
 cask "iterm2"
 cask "logseq"
-cask "notion"
 cask "rectangle"
-cask "sourcetree"
 cask "synology-drive"
 cask "visual-studio-code"
