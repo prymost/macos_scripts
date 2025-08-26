@@ -19,6 +19,7 @@ PowerShell -ExecutionPolicy Bypass -File windows/bootstrap-windows11.ps1
 
 - **Windows**: Reads `common/apps.json` using built-in PowerShell, falls back to hardcoded list
 - **macOS**: Auto-installs `jq` if needed to parse `common/apps.json`, generates Brewfile dynamically
+- **WSL Ubuntu**: Uses `jq` to extract WSL Ubuntu-specific packages from `common/apps.json`
 - **All platforms**: Multiple fallback layers ensure scripts never fail
 
 ## Configuration

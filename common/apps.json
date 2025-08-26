@@ -6,32 +6,32 @@
                 "git": {
                     "macos": "git",
                     "windows": "Git.Git",
-                    "linux": "git"
+                    "wsl_ubuntu": "git"
                 },
                 "jq": {
                     "macos": "jq",
                     "windows": null,
-                    "linux": "jq"
+                    "wsl_ubuntu": "jq"
                 },
                 "bat": {
                     "macos": "bat",
                     "windows": null,
-                    "linux": "bat"
+                    "wsl_ubuntu": "bat"
                 },
                 "direnv": {
                     "macos": "direnv",
                     "windows": null,
-                    "linux": "direnv"
+                    "wsl_ubuntu": "direnv"
                 },
                 "micro": {
                     "macos": "micro",
                     "windows": null,
-                    "linux": "micro"
+                    "wsl_ubuntu": "micro"
                 },
                 "awscli": {
                     "macos": "awscli",
                     "windows": "Amazon.AWSCLI",
-                    "linux": "awscli"
+                    "wsl_ubuntu": "awscli"
                 }
             }
         },
@@ -41,12 +41,12 @@
                 "vscode": {
                     "macos": "visual-studio-code",
                     "windows": "Microsoft.VisualStudioCode",
-                    "linux": null
+                    "wsl_ubuntu": null
                 },
                 "docker": {
                     "macos": "docker",
                     "windows": "Docker.DockerDesktop",
-                    "linux": "docker.io"
+                    "wsl_ubuntu": "docker.io"
                 }
             }
         },
@@ -56,17 +56,17 @@
                 "rbenv": {
                     "macos": "rbenv",
                     "windows": null,
-                    "linux": "rbenv"
+                    "wsl_ubuntu": "rbenv"
                 },
                 "ruby_build": {
                     "macos": "ruby-build",
                     "windows": null,
-                    "linux": "ruby-build"
+                    "wsl_ubuntu": "ruby-build"
                 },
                 "pipenv": {
                     "macos": "pipenv",
                     "windows": null,
-                    "linux": "pipenv"
+                    "wsl_ubuntu": "pipenv"
                 }
             }
         },
@@ -76,7 +76,7 @@
                 "brave": {
                     "macos": "brave-browser",
                     "windows": "Brave.Brave",
-                    "linux": "brave-browser"
+                    "wsl_ubuntu": "brave-browser"
                 }
             }
         },
@@ -86,12 +86,12 @@
                 "logseq": {
                     "macos": "logseq",
                     "windows": "Logseq.Logseq",
-                    "linux": null
+                    "wsl_ubuntu": null
                 },
                 "rectangle": {
                     "macos": "rectangle",
                     "windows": "Microsoft.PowerToys",
-                    "linux": null,
+                    "wsl_ubuntu": null,
                     "notes": "PowerToys provides similar window management features on Windows"
                 }
             }
@@ -102,7 +102,7 @@
                 "vlc": {
                     "macos": "vlc",
                     "windows": "VideoLAN.VLC",
-                    "linux": "vlc"
+                    "wsl_ubuntu": "vlc"
                 }
             }
         },
@@ -112,12 +112,12 @@
                 "discord": {
                     "macos": "discord",
                     "windows": "Discord.Discord",
-                    "linux": "discord"
+                    "wsl_ubuntu": "discord"
                 },
                 "zoom": {
                     "macos": "zoom",
                     "windows": "Zoom.Zoom",
-                    "linux": "zoom"
+                    "wsl_ubuntu": "zoom"
                 }
             }
         },
@@ -127,12 +127,12 @@
                 "synology_drive": {
                     "macos": "synology-drive",
                     "windows": "Synology.DriveClient",
-                    "linux": null
+                    "wsl_ubuntu": null
                 },
                 "google_drive": {
                     "macos": "google-drive",
                     "windows": "Google.GoogleDrive",
-                    "linux": null
+                    "wsl_ubuntu": null
                 }
             }
         },
@@ -142,18 +142,18 @@
                 "iterm2": {
                     "macos": "iterm2",
                     "windows": "Microsoft.WindowsTerminal",
-                    "linux": null,
+                    "wsl_ubuntu": null,
                     "notes": "Windows Terminal is the Windows equivalent"
                 },
                 "zsh": {
                     "macos": "zsh",
                     "windows": null,
-                    "linux": "zsh"
+                    "wsl_ubuntu": "zsh"
                 },
                 "zsh_autosuggestions": {
                     "macos": "zsh-autosuggestions",
                     "windows": null,
-                    "linux": "zsh-autosuggestions"
+                    "wsl_ubuntu": "zsh-autosuggestions"
                 }
             }
         }
@@ -171,7 +171,7 @@
             "calibre.calibre",
             "7zip.7zip"
         ],
-        "linux_only": [
+        "wsl_ubuntu_only": [
             "kubectl",
             "keychain"
         ]
@@ -187,7 +187,7 @@
             "cli_prefix": "winget install --id",
             "gui_prefix": "winget install --id"
         },
-        "linux": {
+        "wsl_ubuntu": {
             "type": "apt",
             "cli_prefix": "sudo apt install -y",
             "gui_prefix": "sudo apt install -y"

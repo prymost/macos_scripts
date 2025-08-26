@@ -1,7 +1,7 @@
 # Windows Maintenance Scripts - Git Ignore File
 
 # Log files
-maintenance.log
+*maintenance.log
 *.log
 
 # Temporary files

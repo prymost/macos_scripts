@@ -12,17 +12,17 @@ echo "📦 Installing development tools and applications..."
 if [[ -f "$COMMON_CONFIG_PATH" ]] && command -v jq &> /dev/null; then
     echo "🔧 Reading package list from common configuration..."
 
-    # Extract CLI tools for Linux
-    CLI_PACKAGES=($(jq -r '.categories.cli_tools.apps | to_entries[] | select(.value.linux != null) | .value.linux' "$COMMON_CONFIG_PATH"))
+    # Extract CLI tools for WSL Ubuntu
+    CLI_PACKAGES=($(jq -r '.categories.cli_tools.apps | to_entries[] | select(.value.wsl_ubuntu != null) | .value.wsl_ubuntu' "$COMMON_CONFIG_PATH"))
 
-    # Extract language tools for Linux
-    LANGUAGE_PACKAGES=($(jq -r '.categories.languages.apps | to_entries[] | select(.value.linux != null) | .value.linux' "$COMMON_CONFIG_PATH"))
+    # Extract language tools for WSL Ubuntu
+    LANGUAGE_PACKAGES=($(jq -r '.categories.languages.apps | to_entries[] | select(.value.wsl_ubuntu != null) | .value.wsl_ubuntu' "$COMMON_CONFIG_PATH"))
 
-    # Extract Linux-specific packages
-    LINUX_ONLY_PACKAGES=($(jq -r '.platform_specific.linux_only[]?' "$COMMON_CONFIG_PATH"))
+    # Extract WSL Ubuntu-specific packages
+    WSL_UBUNTU_ONLY_PACKAGES=($(jq -r '.platform_specific.wsl_ubuntu_only[]?' "$COMMON_CONFIG_PATH"))
 
     # Combine all packages
-    ALL_PACKAGES=("${CLI_PACKAGES[@]}" "${LANGUAGE_PACKAGES[@]}" "${LINUX_ONLY_PACKAGES[@]}")
+    ALL_PACKAGES=("${CLI_PACKAGES[@]}" "${LANGUAGE_PACKAGES[@]}" "${WSL_UBUNTU_ONLY_PACKAGES[@]}")
 
     echo "✅ Loaded ${#ALL_PACKAGES[@]} packages from common configuration"
 

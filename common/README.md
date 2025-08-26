@@ -12,7 +12,7 @@ Single source of truth for applications across all platforms.
         "chrome": {
           "macos": "google-chrome",
           "windows": "Google.Chrome",
-          "linux": "google-chrome-stable"
+          "wsl_ubuntu": "google-chrome-stable"
         }
       }
     }
@@ -22,11 +22,12 @@ Single source of truth for applications across all platforms.
 
 Categories: `cli_tools`, `development`, `languages`, `browsers`, `productivity`, `media`, `communication`, `cloud_sync`, `terminal`
 
-## How Bootstrap Scripts Use This
+Platforms: `macos`, `windows`, `wsl_ubuntu` (future: `arch_linux`, `fedora`, etc.)## How Bootstrap Scripts Use This
 
-- **Windows**: PowerShell reads JSON directly with `ConvertFrom-Json`
-- **macOS**: Bash uses `jq` (auto-installed) to generate Brewfile
-- **Both**: Fall back gracefully if config unavailable
+- **Windows**: Uses PowerShell's built-in `ConvertFrom-Json` to parse the configuration
+- **macOS**: Uses `jq` (auto-installed if needed) to parse and generate Brewfile
+- **WSL Ubuntu**: Uses `jq` to extract WSL Ubuntu-specific packages for `apt`
+- **All**: Have fallback mechanisms if the common config is unavailable
 
 ## Adding Applications
 
