@@ -6,32 +6,38 @@
                 "git": {
                     "macos": "git",
                     "windows": "Git.Git",
-                    "wsl_ubuntu": "git"
+                    "wsl_ubuntu": "git",
+                    "debian": "git"
                 },
                 "jq": {
                     "macos": "jq",
                     "windows": null,
-                    "wsl_ubuntu": "jq"
+                    "wsl_ubuntu": "jq",
+                    "debian": "jq"
                 },
                 "bat": {
                     "macos": "bat",
                     "windows": null,
-                    "wsl_ubuntu": "bat"
+                    "wsl_ubuntu": "bat",
+                    "debian": "bat"
                 },
                 "direnv": {
                     "macos": "direnv",
                     "windows": null,
-                    "wsl_ubuntu": "direnv"
+                    "wsl_ubuntu": "direnv",
+                    "debian": "direnv"
                 },
                 "micro": {
                     "macos": "micro",
                     "windows": null,
-                    "wsl_ubuntu": "micro"
+                    "wsl_ubuntu": "micro",
+                    "debian": "micro"
                 },
                 "awscli": {
                     "macos": "awscli",
                     "windows": "Amazon.AWSCLI",
-                    "wsl_ubuntu": "awscli"
+                    "wsl_ubuntu": "awscli",
+                    "debian": "awscli"
                 }
             }
         },
@@ -41,12 +47,14 @@
                 "vscode": {
                     "macos": "visual-studio-code",
                     "windows": "Microsoft.VisualStudioCode",
-                    "wsl_ubuntu": null
+                    "wsl_ubuntu": null,
+                    "debian": "code"
                 },
                 "docker": {
                     "macos": "docker",
                     "windows": "Docker.DockerDesktop",
-                    "wsl_ubuntu": "docker.io"
+                    "wsl_ubuntu": "docker.io",
+                    "debian": "docker.io"
                 }
             }
         },
@@ -56,17 +64,20 @@
                 "rbenv": {
                     "macos": "rbenv",
                     "windows": null,
-                    "wsl_ubuntu": "rbenv"
+                    "wsl_ubuntu": "rbenv",
+                    "debian": "rbenv"
                 },
                 "ruby_build": {
                     "macos": "ruby-build",
                     "windows": null,
-                    "wsl_ubuntu": "ruby-build"
+                    "wsl_ubuntu": "ruby-build",
+                    "debian": "ruby-build"
                 },
                 "pipenv": {
                     "macos": "pipenv",
                     "windows": null,
-                    "wsl_ubuntu": "pipenv"
+                    "wsl_ubuntu": "pipenv",
+                    "debian": "pipenv"
                 }
             }
         },
@@ -76,7 +87,8 @@
                 "brave": {
                     "macos": "brave-browser",
                     "windows": "Brave.Brave",
-                    "wsl_ubuntu": "brave-browser"
+                    "wsl_ubuntu": "brave-browser",
+                    "debian": "brave-browser"
                 }
             }
         },
@@ -86,13 +98,15 @@
                 "logseq": {
                     "macos": "logseq",
                     "windows": "Logseq.Logseq",
-                    "wsl_ubuntu": null
+                    "wsl_ubuntu": null,
+                    "debian": "logseq"
                 },
                 "rectangle": {
                     "macos": "rectangle",
                     "windows": "Microsoft.PowerToys",
                     "wsl_ubuntu": null,
-                    "notes": "PowerToys provides similar window management features on Windows"
+                    "debian": null,
+                    "notes": "PowerToys provides similar window management features on Windows; PopOS has built-in tiling"
                 }
             }
         },
@@ -102,7 +116,8 @@
                 "vlc": {
                     "macos": "vlc",
                     "windows": "VideoLAN.VLC",
-                    "wsl_ubuntu": "vlc"
+                    "wsl_ubuntu": "vlc",
+                    "debian": "vlc"
                 }
             }
         },
@@ -112,12 +127,14 @@
                 "discord": {
                     "macos": "discord",
                     "windows": "Discord.Discord",
-                    "wsl_ubuntu": "discord"
+                    "wsl_ubuntu": "discord",
+                    "debian": "discord"
                 },
                 "zoom": {
                     "macos": "zoom",
                     "windows": "Zoom.Zoom",
-                    "wsl_ubuntu": "zoom"
+                    "wsl_ubuntu": "zoom",
+                    "debian": "zoom"
                 }
             }
         },
@@ -127,12 +144,14 @@
                 "synology_drive": {
                     "macos": "synology-drive",
                     "windows": "Synology.DriveClient",
-                    "wsl_ubuntu": null
+                    "wsl_ubuntu": null,
+                    "debian": null
                 },
                 "google_drive": {
                     "macos": "google-drive",
                     "windows": "Google.GoogleDrive",
-                    "wsl_ubuntu": null
+                    "wsl_ubuntu": null,
+                    "debian": null
                 }
             }
         },
@@ -143,17 +162,20 @@
                     "macos": "iterm2",
                     "windows": "Microsoft.WindowsTerminal",
                     "wsl_ubuntu": null,
-                    "notes": "Windows Terminal is the Windows equivalent"
+                    "debian": null,
+                    "notes": "Windows Terminal is the Windows equivalent; PopOS uses GNOME Terminal by default"
                 },
                 "zsh": {
                     "macos": "zsh",
                     "windows": null,
-                    "wsl_ubuntu": "zsh"
+                    "wsl_ubuntu": "zsh",
+                    "debian": "zsh"
                 },
                 "zsh_autosuggestions": {
                     "macos": "zsh-autosuggestions",
                     "windows": null,
-                    "wsl_ubuntu": "zsh-autosuggestions"
+                    "wsl_ubuntu": "zsh-autosuggestions",
+                    "debian": "zsh-autosuggestions"
                 }
             }
         }
@@ -174,6 +196,10 @@
         "wsl_ubuntu_only": [
             "kubectl",
             "keychain"
+        ],
+        "debian_only": [
+            "kubectl",
+            "keychain"
         ]
     },
     "package_managers": {
@@ -188,6 +214,11 @@
             "gui_prefix": "winget install --id"
         },
         "wsl_ubuntu": {
+            "type": "apt",
+            "cli_prefix": "sudo apt install -y",
+            "gui_prefix": "sudo apt install -y"
+        },
+        "debian": {
             "type": "apt",
             "cli_prefix": "sudo apt install -y",
             "gui_prefix": "sudo apt install -y"
