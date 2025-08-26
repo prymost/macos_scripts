@@ -9,7 +9,12 @@ echo "📁 Script directory: $SCRIPT_DIR"
 
 # Run compatibility check first
 echo "🔍 Running compatibility check..."
-"${SCRIPT_DIR}/check_compatibility.sh"
+if [[ -x "${SCRIPT_DIR}/check_compatibility.sh" ]]; then
+    "${SCRIPT_DIR}/check_compatibility.sh"
+else
+    echo "❌ Compatibility check script not found or not executable"
+    exit 1
+fi
 
 echo ""
 read -p "Continue with bootstrap? (y/N): " -n 1 -r
@@ -20,10 +25,20 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 echo "🔧 Running initial setup..."
-"${SCRIPT_DIR}/setup/initial.sh"
+if [[ -x "${SCRIPT_DIR}/setup/initial.sh" ]]; then
+    "${SCRIPT_DIR}/setup/initial.sh"
+else
+    echo "❌ Initial setup script not found or not executable"
+    exit 1
+fi
 
 echo "📦 Installing applications and packages..."
-"${SCRIPT_DIR}/setup/my_installs.sh"
+if [[ -x "${SCRIPT_DIR}/setup/my_installs.sh" ]]; then
+    "${SCRIPT_DIR}/setup/my_installs.sh"
+else
+    echo "❌ Installation script not found or not executable"
+    exit 1
+fi
 
 echo "✅ Bootstrap process completed!"
 echo "🔄 Please restart your session to ensure all changes take effect."

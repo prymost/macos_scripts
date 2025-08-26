@@ -10,7 +10,11 @@ check_distribution() {
     echo "📋 Checking Linux distribution..."
 
     if [[ -f /etc/os-release ]]; then
-        source /etc/os-release
+        # Safely read os-release without sourcing
+        NAME=$(grep '^NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
+        VERSION=$(grep '^VERSION=' /etc/os-release | cut -d= -f2 | tr -d '"')
+        ID=$(grep '^ID=' /etc/os-release | cut -d= -f2 | tr -d '"')
+
         echo "   Distribution: $NAME"
         echo "   Version: $VERSION"
 
@@ -56,7 +60,7 @@ check_required_commands() {
         echo ""
         echo "❌ Missing required commands: ${missing_commands[*]}"
         echo "   Please install them first with:"
-        echo "   sudo apt update && sudo apt install -y ${missing_commands[*]}"
+        echo "   sudo apt update && sudo apt install -y -qq ${missing_commands[*]}"
         return 1
     fi
 }
