@@ -1,18 +1,33 @@
-# Bootstrap Scripts Collection
+# Bootstrap Scripts
 
-This repository contains automated setup and maintenance scripts for multiple platforms.
-
-## Platform-Specific Documentation
-
-### 🍎 macOS
-See [mac/README.md](mac/README.md) for macOS bootstrap and maintenance scripts.
-
-### 🪟 Windows
-See [windows/README.md](windows/README.md) for Windows 11 bootstrap and maintenance scripts.
-
-### 🐧 WSL/Linux
-See [windows/wsl_scripts/README.md](windows/wsl_scripts/README.md) for WSL and Linux setup scripts.
+Automated setup scripts for my personal machines
 
 ## Quick Start
 
-Choose your platform and follow the instructions in the corresponding README file.
+```bash
+# Windows (as Administrator)
+PowerShell -ExecutionPolicy Bypass -File windows/bootstrap-windows11.ps1
+
+# macOS
+./mac/bootstrap.sh
+
+# WSL/Linux
+./windows/wsl_scripts/bootstrap.sh
+```
+
+## How It Works
+
+- **Windows**: Reads `common/apps.json` using built-in PowerShell, falls back to hardcoded list
+- **macOS**: Auto-installs `jq` if needed to parse `common/apps.json`, generates Brewfile dynamically
+- **All platforms**: Multiple fallback layers ensure scripts never fail
+
+## Configuration
+
+Edit `common/apps.json` to add/remove applications across all platforms. The bootstrap scripts read this automatically.
+
+## Platform Details
+
+- [mac/README.md](mac/README.md) - macOS specifics
+- [windows/README.md](windows/README.md) - Windows 11 specifics
+- [windows/wsl_scripts/README.md](windows/wsl_scripts/README.md) - WSL/Linux specifics
+- [common/README.md](common/README.md) - Shared configuration

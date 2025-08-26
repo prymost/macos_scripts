@@ -300,40 +300,93 @@ if ($runApps) {
         }
     }
 
-    # List of essential applications to install
-    $apps = @(
-        # Browsers
-        @{Name = "Google Chrome"; Id = "Google.Chrome" },
-        @{Name = "Mozilla Firefox"; Id = "Mozilla.Firefox" },
+    # Generate application list from common configuration
+    Write-Host "Loading application list from common configuration..." -ForegroundColor Green
 
-        # Development Tools
-        @{Name = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode" },
-        @{Name = "Git"; Id = "Git.Git" },
-        @{Name = "Windows Terminal"; Id = "Microsoft.WindowsTerminal" },
+    # Try to load from common configuration, fallback to inline list
+    $commonConfigPath = Join-Path $PSScriptRoot "..\common\apps.json"
+    $apps = @()
 
-        # Productivity Tools
-        @{Name = "7-Zip"; Id = "7zip.7zip" },
-        @{Name = "VLC Media Player"; Id = "VideoLAN.VLC" },
-        @{Name = "LibreOffice"; Id = "TheDocumentFoundation.LibreOffice" },
+    if (Test-Path $commonConfigPath) {
+        try {
+            Write-Host "Reading common configuration..." -ForegroundColor Cyan
+            $config = Get-Content $commonConfigPath -Raw | ConvertFrom-Json
 
-        # Communication
-        @{Name = "Discord"; Id = "Discord.Discord" },
-        @{Name = "Zoom"; Id = "Zoom.Zoom" },
+            # Generate apps from common config
+            $categories = @('browsers', 'development', 'productivity', 'media', 'communication', 'cloud_sync')
 
-        # Utilities
-        @{Name = "PowerToys"; Id = "Microsoft.PowerToys" },
-        @{Name = "ShareX"; Id = "ShareX.ShareX" },
-        @{Name = "Google Drive"; Id = "Google.GoogleDrive" },
-        @{Name = "Synology Drive Client"; Id = "Synology.DriveClient" },
-        @{Name = "Apple iCloud"; Id = "Apple.iCloud" },
-        @{Name = "Callibre"; Id = "calibre.calibre" },
+            foreach ($category in $categories) {
+                if ($config.categories.$category -and $config.categories.$category.apps) {
+                    $categoryApps = $config.categories.$category.apps
+                    $appNames = $categoryApps.PSObject.Properties.Name
 
-        # Other
-        @{Name = "Steam"; Id = "Valve.Steam" },
-        @{Name = "ExpressVPN"; Id = "ExpressVPN.ExpressVPN" },
-        @{Name = "Logseq"; Id = "Logseq.Logseq" },
-        @{Name = "Notion"; Id = "Notion.Notion" }
-    )
+                    foreach ($appName in $appNames) {
+                        $app = $categoryApps.$appName
+                        if ($app.windows -and $app.windows -ne $null) {
+                            # Convert app name to display name
+                            $displayName = ($appName -split '_' | ForEach-Object {
+                                $_.Substring(0,1).ToUpper() + $_.Substring(1).ToLower()
+                            }) -join ' '
+
+                            $apps += @{Name = $displayName; Id = $app.windows}
+                        }
+                    }
+                }
+            }
+
+            # Add Windows-specific apps
+            if ($config.platform_specific -and $config.platform_specific.windows_only) {
+                foreach ($appId in $config.platform_specific.windows_only) {
+                    $displayName = if ($appId -like "*.*") { $appId.Split('.')[-1] } else { $appId }
+                    $apps += @{Name = $displayName; Id = $appId}
+                }
+            }
+
+            Write-Host "✅ Loaded $($apps.Count) applications from common configuration" -ForegroundColor Green
+        }
+        catch {
+            Write-Warning "Failed to load common configuration: $($_.Exception.Message)"
+            Write-Host "Falling back to inline application list..." -ForegroundColor Yellow
+            $apps = @()  # Will trigger fallback below
+        }
+    }
+
+    # Fallback to inline list if common config failed or doesn't exist
+    if ($apps.Count -eq 0) {
+        Write-Host "Using fallback application list..." -ForegroundColor Yellow
+        $apps = @(
+            # Browsers
+            @{Name = "Google Chrome"; Id = "Google.Chrome" },
+            @{Name = "Mozilla Firefox"; Id = "Mozilla.Firefox" },
+            @{Name = "Brave Browser"; Id = "Brave.Brave" },
+
+            # Development Tools
+            @{Name = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode" },
+            @{Name = "Git"; Id = "Git.Git" },
+            @{Name = "Windows Terminal"; Id = "Microsoft.WindowsTerminal" },
+
+            # Productivity Tools
+            @{Name = "7-Zip"; Id = "7zip.7zip" },
+            @{Name = "VLC Media Player"; Id = "VideoLAN.VLC" },
+            @{Name = "LibreOffice"; Id = "TheDocumentFoundation.LibreOffice" },
+
+            # Communication
+            @{Name = "Discord"; Id = "Discord.Discord" },
+            @{Name = "Zoom"; Id = "Zoom.Zoom" },
+
+            # Utilities
+            @{Name = "PowerToys"; Id = "Microsoft.PowerToys" },
+            @{Name = "ShareX"; Id = "ShareX.ShareX" },
+            @{Name = "Google Drive"; Id = "Google.GoogleDrive" },
+            @{Name = "Synology Drive Client"; Id = "Synology.DriveClient" },
+            @{Name = "Apple iCloud"; Id = "Apple.iCloud" },
+            @{Name = "Calibre"; Id = "calibre.calibre" },
+            @{Name = "Steam"; Id = "Valve.Steam" },
+            @{Name = "ExpressVPN"; Id = "ExpressVPN.ExpressVPN" },
+            @{Name = "Logseq"; Id = "Logseq.Logseq" },
+            @{Name = "Notion"; Id = "Notion.Notion" }
+        )
+    }
 
     # Install each application
     foreach ($app in $apps) {

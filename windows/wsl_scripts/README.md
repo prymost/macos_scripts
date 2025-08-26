@@ -25,39 +25,9 @@ My personal scripts for setting up and maintaining a fresh WSL Ubuntu installati
 - **`bootstrap.sh`** - Main entry point that orchestrates the entire setup
 - **`check_compatibility.sh`** - Validates WSL and system compatibility before setup
 - **`setup/initial.sh`** - Installs core tools, Homebrew, Docker, and essential packages
-- **`setup/my_installs.sh`** - Installs development tools, languages, and applications
+- **`setup/my_installs.sh`** - Reads from common config and installs development tools, languages, and applications
 - **`setup/configure_linux.sh`** - Configures shell, aliases, Git, and development environment
 - **`setup/restore.sh`** - Restores backed-up configuration files
-- **`packages.txt`** - Reference list of installed packages
-
-## 🛠️ What Gets Installed
-
-### Core Tools
-- **Package Managers**: Homebrew (Linuxbrew), APT
-- **Containers**: Docker with Docker Compose
-- **Version Control**: Git, GitHub CLI
-- **Cloud Tools**: AWS CLI v2
-- **Text Editors**: Neovim, Micro, Nano
-- **Shell**: Zsh with Oh My Zsh, Starship prompt
-
-### Development Languages & Runtimes
-- **Python 3**: pip, pipenv, poetry, common packages
-- **Node.js**: npm, global development packages
-- **Ruby**: rbenv with latest Ruby version
-- **Go, Rust**: via Homebrew
-
-### Development Tools
-- **Terminal**: tmux, screen, modern Unix tools (bat, exa, fd, ripgrep, fzf)
-- **Code Quality**: ESLint, Prettier, Black, Flake8, ShellCheck
-- **Databases**: PostgreSQL client, MySQL client, Redis tools, SQLite3
-- **Media**: ImageMagick, FFmpeg
-- **Documentation**: Pandoc
-
-### Productivity Features
-- **Smart Aliases**: Git shortcuts, Docker commands, navigation helpers
-- **Windows Integration**: Commands to open Explorer, VS Code from WSL
-- **Auto-completion**: Enhanced shell experience with suggestions
-- **Development Directories**: Pre-configured project structure
 
 ## 💻 Compatibility
 
@@ -86,13 +56,6 @@ My personal scripts for setting up and maintaining a fresh WSL Ubuntu installati
 
 # Configure environment only
 ./setup/configure_linux.sh
-```
-
-### Manual Package Installation
-```bash
-# Install from package list
-sudo apt update
-cat packages.txt | grep -v '^#' | xargs sudo apt install -y
 ```
 
 ## 🔄 Maintenance

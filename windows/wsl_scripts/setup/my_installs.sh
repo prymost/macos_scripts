@@ -2,23 +2,60 @@
 set -uo pipefail
 IFS=$'\n\t'
 
-# Install packages and applications using package lists
+# Install packages and applications using common configuration
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+COMMON_CONFIG_PATH="${SCRIPT_DIR}/../../../common/apps.json"
 
 echo "📦 Installing development tools and applications..."
 
-# APT packages
+# Check if common config exists and jq is available
+if [[ -f "$COMMON_CONFIG_PATH" ]] && command -v jq &> /dev/null; then
+    echo "🔧 Reading package list from common configuration..."
+
+    # Extract CLI tools for Linux
+    CLI_PACKAGES=($(jq -r '.categories.cli_tools.apps | to_entries[] | select(.value.linux != null) | .value.linux' "$COMMON_CONFIG_PATH"))
+
+    # Extract language tools for Linux
+    LANGUAGE_PACKAGES=($(jq -r '.categories.languages.apps | to_entries[] | select(.value.linux != null) | .value.linux' "$COMMON_CONFIG_PATH"))
+
+    # Extract Linux-specific packages
+    LINUX_ONLY_PACKAGES=($(jq -r '.platform_specific.linux_only[]?' "$COMMON_CONFIG_PATH"))
+
+    # Combine all packages
+    ALL_PACKAGES=("${CLI_PACKAGES[@]}" "${LANGUAGE_PACKAGES[@]}" "${LINUX_ONLY_PACKAGES[@]}")
+
+    echo "✅ Loaded ${#ALL_PACKAGES[@]} packages from common configuration"
+
+elif [[ -f "$COMMON_CONFIG_PATH" ]] && ! command -v jq &> /dev/null; then
+    echo "⚠️  Common configuration found but jq not available"
+    echo "📦 Installing jq first..."
+    sudo apt update
+    sudo apt install -y jq
+    # Recursively call this script to reprocess with jq
+    exec "$0"
+
+else
+    echo "📋 Using fallback package list..."
+    # Fallback package list
+    ALL_PACKAGES=(
+        "jq" "bat" "direnv" "micro" "keychain" "kubectl"
+        "git" "rbenv" "ruby-build" "pipenv"
+    )
+fi
+
+# APT packages installation
 echo "📋 Installing APT packages..."
 sudo apt update
 
-# Development tools
-sudo apt install -y \
-    jq \
-    bat \
-    direnv \
-    micro \
-    keychain \
-    kubectl
+# Install packages in batches to handle potential failures
+for package in "${ALL_PACKAGES[@]}"; do
+    echo "Installing $package..."
+    if sudo apt install -y "$package"; then
+        echo "✅ $package installed successfully"
+    else
+        echo "⚠️  Failed to install $package, continuing..."
+    fi
+done
 
 # Language-specific tools
 echo "🔧 Installing language-specific tools..."

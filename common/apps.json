@@ -1,0 +1,196 @@
+{
+    "categories": {
+        "cli_tools": {
+            "description": "Command line development tools",
+            "apps": {
+                "git": {
+                    "macos": "git",
+                    "windows": "Git.Git",
+                    "linux": "git"
+                },
+                "jq": {
+                    "macos": "jq",
+                    "windows": null,
+                    "linux": "jq"
+                },
+                "bat": {
+                    "macos": "bat",
+                    "windows": null,
+                    "linux": "bat"
+                },
+                "direnv": {
+                    "macos": "direnv",
+                    "windows": null,
+                    "linux": "direnv"
+                },
+                "micro": {
+                    "macos": "micro",
+                    "windows": null,
+                    "linux": "micro"
+                },
+                "awscli": {
+                    "macos": "awscli",
+                    "windows": "Amazon.AWSCLI",
+                    "linux": "awscli"
+                }
+            }
+        },
+        "development": {
+            "description": "Development environments and tools",
+            "apps": {
+                "vscode": {
+                    "macos": "visual-studio-code",
+                    "windows": "Microsoft.VisualStudioCode",
+                    "linux": null
+                },
+                "docker": {
+                    "macos": "docker",
+                    "windows": "Docker.DockerDesktop",
+                    "linux": "docker.io"
+                }
+            }
+        },
+        "languages": {
+            "description": "Programming language tools",
+            "apps": {
+                "rbenv": {
+                    "macos": "rbenv",
+                    "windows": null,
+                    "linux": "rbenv"
+                },
+                "ruby_build": {
+                    "macos": "ruby-build",
+                    "windows": null,
+                    "linux": "ruby-build"
+                },
+                "pipenv": {
+                    "macos": "pipenv",
+                    "windows": null,
+                    "linux": "pipenv"
+                }
+            }
+        },
+        "browsers": {
+            "description": "Web browsers",
+            "apps": {
+                "brave": {
+                    "macos": "brave-browser",
+                    "windows": "Brave.Brave",
+                    "linux": "brave-browser"
+                }
+            }
+        },
+        "productivity": {
+            "description": "Productivity applications",
+            "apps": {
+                "logseq": {
+                    "macos": "logseq",
+                    "windows": "Logseq.Logseq",
+                    "linux": null
+                },
+                "rectangle": {
+                    "macos": "rectangle",
+                    "windows": "Microsoft.PowerToys",
+                    "linux": null,
+                    "notes": "PowerToys provides similar window management features on Windows"
+                }
+            }
+        },
+        "media": {
+            "description": "Media and entertainment",
+            "apps": {
+                "vlc": {
+                    "macos": "vlc",
+                    "windows": "VideoLAN.VLC",
+                    "linux": "vlc"
+                }
+            }
+        },
+        "communication": {
+            "description": "Communication tools",
+            "apps": {
+                "discord": {
+                    "macos": "discord",
+                    "windows": "Discord.Discord",
+                    "linux": "discord"
+                },
+                "zoom": {
+                    "macos": "zoom",
+                    "windows": "Zoom.Zoom",
+                    "linux": "zoom"
+                }
+            }
+        },
+        "cloud_sync": {
+            "description": "Cloud storage and sync",
+            "apps": {
+                "synology_drive": {
+                    "macos": "synology-drive",
+                    "windows": "Synology.DriveClient",
+                    "linux": null
+                },
+                "google_drive": {
+                    "macos": "google-drive",
+                    "windows": "Google.GoogleDrive",
+                    "linux": null
+                }
+            }
+        },
+        "terminal": {
+            "description": "Terminal and shell tools",
+            "apps": {
+                "iterm2": {
+                    "macos": "iterm2",
+                    "windows": "Microsoft.WindowsTerminal",
+                    "linux": null,
+                    "notes": "Windows Terminal is the Windows equivalent"
+                },
+                "zsh": {
+                    "macos": "zsh",
+                    "windows": null,
+                    "linux": "zsh"
+                },
+                "zsh_autosuggestions": {
+                    "macos": "zsh-autosuggestions",
+                    "windows": null,
+                    "linux": "zsh-autosuggestions"
+                }
+            }
+        }
+    },
+    "platform_specific": {
+        "macos_only": [
+            "bash"
+        ],
+        "windows_only": [
+            "Microsoft.PowerToys",
+            "ShareX.ShareX",
+            "Valve.Steam",
+            "ExpressVPN.ExpressVPN",
+            "TheDocumentFoundation.LibreOffice",
+            "calibre.calibre",
+            "7zip.7zip"
+        ],
+        "linux_only": [
+            "kubectl",
+            "keychain"
+        ]
+    },
+    "package_managers": {
+        "macos": {
+            "type": "homebrew",
+            "cli_prefix": "brew",
+            "gui_prefix": "cask"
+        },
+        "windows": {
+            "type": "winget",
+            "cli_prefix": "winget install --id",
+            "gui_prefix": "winget install --id"
+        },
+        "linux": {
+            "type": "apt",
+            "cli_prefix": "sudo apt install -y",
+            "gui_prefix": "sudo apt install -y"
+        }
+    }
+}
