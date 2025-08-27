@@ -19,7 +19,7 @@ My pesonal scripts for setting up and maintaining a new MacBook with my preferre
 - **`bootstrap.sh`** - Main entry point that orchestrates the entire setup
 - **`check_compatibility.sh`** - Validates system compatibility before setup
 - **`setup/initial.sh`** - Installs Xcode tools, Homebrew, and core utilities
-- **`setup/my_installs.sh`** - Generates Brewfile from common config and installs applications
+- **`setup/my_installs.sh`** - Uses static Brewfile to install applications
 - **`setup/configure_osx.sh`** - Configures macOS system preferences
 - **`setup/restore.sh`** - Restores backed-up configuration files
 
@@ -31,9 +31,9 @@ My pesonal scripts for setting up and maintaining a new MacBook with my preferre
 
 ## 🛠 Alternative Usage
 
-### Using Generated Brewfile
+### Using Brewfile
 ```bash
-# Run setup first to generate Brewfile, then:
+# Run setup first, then:
 brew bundle install
 ```
 
@@ -42,7 +42,7 @@ brew bundle install
 # Setup only core tools
 ./setup/initial.sh
 
-# Install applications only (generates Brewfile from common config)
+# Install applications only (uses static Brewfile)
 ./setup/my_installs.sh
 
 # Configure system settings only
@@ -51,6 +51,6 @@ brew bundle install
 
 ## 🔄 Maintenance
 
-- **`update_tools.sh`** - Update Homebrew packages and any generated Brewfile
+- **`update_tools.sh`** - Update Homebrew packages and Brewfile
 - **`backup.sh`** - Backup current configuration
-- Run `brew bundle cleanup` to remove unlisted packages (after generating Brewfile)
+- Run `brew bundle cleanup` to remove unlisted packages

@@ -25,7 +25,7 @@ My personal scripts for setting up and maintaining a fresh WSL Ubuntu installati
 - **`bootstrap.sh`** - Main entry point that orchestrates the entire setup
 - **`check_compatibility.sh`** - Validates WSL and system compatibility before setup
 - **`setup/initial.sh`** - Installs core tools, Homebrew, Docker, and essential packages
-- **`setup/my_installs.sh`** - Reads from common config and installs development tools, languages, and applications
+- **`setup/my_installs.sh`** - Installs development tools, languages, and applications from predefined package lists
 - **`setup/configure_linux.sh`** - Configures shell, aliases, Git, and development environment
 - **`setup/restore.sh`** - Restores backed-up configuration files
 

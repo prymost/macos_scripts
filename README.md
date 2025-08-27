@@ -1,34 +1,44 @@
 # Bootstrap Scripts
 
-Automated setup scripts for my personal machines
+Automated setup scripts for my personal machines across multiple platforms
 
 ## Quick Start
 
 ```bash
-# Windows (as Administrator)
+# Windows 11 (as Administrator)
 PowerShell -ExecutionPolicy Bypass -File windows/bootstrap-windows11.ps1
 
 # macOS
 ./mac/bootstrap.sh
 
-# WSL/Linux
+# WSL Ubuntu
 ./windows/wsl_scripts/bootstrap.sh
+
+# PopOS/Debian Linux
+./linux/debian/bootstrap.sh
 ```
 
 ## How It Works
 
-- **Windows**: Reads `common/apps.json` using built-in PowerShell, falls back to hardcoded list
-- **macOS**: Auto-installs `jq` if needed to parse `common/apps.json`, generates Brewfile dynamically
-- **WSL Ubuntu**: Uses `jq` to extract WSL Ubuntu-specific packages from `common/apps.json`
-- **All platforms**: Multiple fallback layers ensure scripts never fail
+Each platform has its own optimized approach:
 
-## Configuration
+- **Windows**: Uses existing WingetApps module with inline application list for reliability
+- **macOS**: Uses static Brewfile for traditional Homebrew workflow
+- **WSL Ubuntu**: Direct package arrays for simplicity and speed
+- **PopOS/Debian**: Direct package arrays with special installation handling for complex apps
 
-Edit `common/apps.json` to add/remove applications across all platforms. The bootstrap scripts read this automatically.
+All scripts are designed to be platform-specific, simple, and maintainable without shared dependencies.
 
 ## Platform Details
 
-- [mac/README.md](mac/README.md) - macOS specifics
-- [windows/README.md](windows/README.md) - Windows 11 specifics
-- [windows/wsl_scripts/README.md](windows/wsl_scripts/README.md) - WSL/Linux specifics
-- [common/README.md](common/README.md) - Shared configuration
+- [mac/README.md](mac/README.md) - macOS setup with Homebrew
+- [windows/README.md](windows/README.md) - Windows 11 bootstrap with interactive menu
+- [windows/wsl_scripts/README.md](windows/wsl_scripts/README.md) - WSL Ubuntu development environment
+- [linux/debian/README.md](linux/debian/README.md) - PopOS/Debian desktop setup (coming soon)
+
+## Supported Platforms
+
+- ✅ **Windows 11** - Full desktop bootstrap with WSL2
+- ✅ **macOS** - Apple Silicon & Intel support
+- ✅ **WSL Ubuntu** - Development environment in Windows
+- ✅ **PopOS/Debian** - Linux desktop replacement

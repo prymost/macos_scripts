@@ -161,7 +161,7 @@ After the initial bootstrap, use the maintenance scripts to keep your system upd
 
 To modify which applications are installed:
 
-1. Edit the `$apps` array in the script (around line 320)
+1. Edit the `$apps` array in the WingetApps module (`modules/WingetApps.ps1`)
 2. Add or remove entries in this format:
    ```powershell
    @{Name="App Name"; Id="winget.id"}
