@@ -150,6 +150,16 @@ else
     echo "✅ Logseq already installed"
 fi
 
+# Install Calibre
+echo "📦 Installing Calibre..."
+if ! command -v calibre &> /dev/null; then
+    echo "🔄 Downloading and installing Calibre..."
+    sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+    echo "✅ Calibre installed"
+else
+    echo "✅ Calibre already installed"
+fi
+
 echo "🧹 Cleaning up..."
 sudo apt autoremove -y -qq
 sudo apt autoclean -qq
