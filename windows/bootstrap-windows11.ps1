@@ -264,163 +264,98 @@ if ($runFeatures) {
 if ($runApps) {
     Write-Host "`n[STEP 4] Installing Essential Applications..." -ForegroundColor Yellow
 
-    # Check if winget is available, install if not
+    # Import the winget management module
     try {
-        $wingetVersion = winget --version
-        Write-Host "Winget version: $wingetVersion" -ForegroundColor Green
-    }
-    catch {
-        Write-Host "Winget not found. Installing App Installer..." -ForegroundColor Yellow
-        try {
-            # Download and install App Installer from Microsoft Store
-            $progressPreference = 'SilentlyContinue'
-            $appInstallerUrl = "https://aka.ms/getwinget"
-            $tempPath = "$env:TEMP\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+        $wingetModulePath = Join-Path $PSScriptRoot "modules\WingetApps.ps1"
+        if (Test-Path $wingetModulePath) {
+            . $wingetModulePath
 
-            Write-Host "Downloading App Installer..." -ForegroundColor Green
-            Invoke-WebRequest -Uri $appInstallerUrl -OutFile $tempPath
+            # Ensure winget is available
+            if (Initialize-Winget) {
+                # Define application list
+                $apps = @(
+                    # Development Tools
+                    @{Name = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode" },
+                    @{Name = "Git"; Id = "Git.Git" },
+                    @{Name = "Windows Terminal"; Id = "Microsoft.WindowsTerminal" },
+                    @{Name = "Docker Desktop"; Id = "Docker.DockerDesktop" },
+                    @{Name = "AWS CLI"; Id = "Amazon.AWSCLI" },
 
-            Write-Host "Installing App Installer..." -ForegroundColor Green
-            Add-AppxPackage -Path $tempPath
+                    # Browsers
+                    @{Name = "Brave Browser"; Id = "Brave.Brave" },
 
-            # Clean up
-            Remove-Item $tempPath -Force
+                    # Productivity Tools
+                    @{Name = "Logseq"; Id = "Logseq.Logseq" },
+                    @{Name = "Microsoft PowerToys"; Id = "Microsoft.PowerToys" },
+                    @{Name = "7-Zip"; Id = "7zip.7zip" },
+                    @{Name = "LibreOffice"; Id = "TheDocumentFoundation.LibreOffice" },
 
-            # Verify installation
-            Start-Sleep -Seconds 5
-            $wingetVersion = winget --version
-            Write-Host "Winget installed successfully! Version: $wingetVersion" -ForegroundColor Green
+                    # Media
+                    @{Name = "VLC Media Player"; Id = "VideoLAN.VLC" },
 
-        }
-        catch {
-            Write-Warning "Failed to automatically install winget. Please install App Installer manually from Microsoft Store."
-            Write-Host "You can also download it from: https://aka.ms/getwinget" -ForegroundColor Cyan
-            Write-Host "Skipping application installation section..." -ForegroundColor Yellow
-            return
-        }
-    }
+                    # Communication
+                    @{Name = "Discord"; Id = "Discord.Discord" },
+                    @{Name = "Zoom"; Id = "Zoom.Zoom" },
 
-    # Generate application list from common configuration
-    Write-Host "Loading application list from common configuration..." -ForegroundColor Green
+                    # Cloud Storage
+                    @{Name = "Google Drive"; Id = "Google.GoogleDrive" },
+                    @{Name = "Synology Drive Client"; Id = "Synology.DriveClient" },
 
-    # Try to load from common configuration, fallback to inline list
-    $commonConfigPath = Join-Path $PSScriptRoot "..\common\apps.json"
-    $apps = @()
+                    # Utilities
+                    @{Name = "ShareX"; Id = "ShareX.ShareX" },
+                    @{Name = "Steam"; Id = "Valve.Steam" },
+                    @{Name = "ExpressVPN"; Id = "ExpressVPN.ExpressVPN" },
+                    @{Name = "Calibre"; Id = "calibre.calibre" }
+                )
 
-    if (Test-Path $commonConfigPath) {
-        try {
-            Write-Host "Reading common configuration..." -ForegroundColor Cyan
-            $config = Get-Content $commonConfigPath -Raw | ConvertFrom-Json
+                Write-Host "✅ Loaded $($apps.Count) applications" -ForegroundColor Green
 
-            # Generate apps from common config
-            $categories = @('browsers', 'development', 'productivity', 'media', 'communication', 'cloud_sync')
-
-            foreach ($category in $categories) {
-                if ($config.categories.$category -and $config.categories.$category.apps) {
-                    $categoryApps = $config.categories.$category.apps
-                    $appNames = $categoryApps.PSObject.Properties.Name
-
-                    foreach ($appName in $appNames) {
-                        $app = $categoryApps.$appName
-                        if ($app.windows -and $app.windows -ne $null) {
-                            # Convert app name to display name
-                            $displayName = ($appName -split '_' | ForEach-Object {
-                                $_.Substring(0,1).ToUpper() + $_.Substring(1).ToLower()
-                            }) -join ' '
-
-                            $apps += @{Name = $displayName; Id = $app.windows}
-                        }
+                # Install each application
+                foreach ($app in $apps) {
+                    Write-Host "Installing $($app.Name)..." -ForegroundColor Green
+                    try {
+                        winget install --id $app.Id --silent --accept-package-agreements --accept-source-agreements
+                        Write-Host "$($app.Name) installed successfully!" -ForegroundColor Green
+                    }
+                    catch {
+                        Write-Warning "Failed to install $($app.Name): $($_.Exception.Message)"
                     }
                 }
-            }
 
-            # Add Windows-specific apps
-            if ($config.platform_specific -and $config.platform_specific.windows_only) {
-                foreach ($appId in $config.platform_specific.windows_only) {
-                    $displayName = if ($appId -like "*.*") { $appId.Split('.')[-1] } else { $appId }
-                    $apps += @{Name = $displayName; Id = $appId}
+                # Install Kinto (Mac-style keyboard shortcuts for Windows)
+                Write-Host "`nInstalling Kinto (Mac-style keyboard shortcuts)..." -ForegroundColor Yellow
+                try {
+                    Write-Host "Kinto provides Mac-style keyboard shortcuts for Windows..." -ForegroundColor Cyan
+                    Write-Host "This will enable familiar shortcuts like Cmd+C, Cmd+V, Cmd+Tab, etc." -ForegroundColor Cyan
+
+                    # Download and execute Kinto installation script
+                    $kintoInstallScript = "Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/rbreaves/kinto/master/install/windows.ps1 -UseBasicParsing | iex"
+
+                    Write-Host "Downloading and installing Kinto..." -ForegroundColor Green
+                    Invoke-Expression $kintoInstallScript
+
+                    Write-Host "Kinto installed successfully!" -ForegroundColor Green
+                    Write-Host "After restart, Kinto will provide Mac-style keyboard shortcuts." -ForegroundColor Cyan
+                    Write-Host "You can access Kinto settings from the system tray." -ForegroundColor Cyan
+                }
+                catch {
+                    Write-Warning "Failed to install Kinto: $($_.Exception.Message)"
+                    Write-Host "You can manually install Kinto later by running:" -ForegroundColor Yellow
+                    Write-Host "Set-ExecutionPolicy Bypass -Scope Process -Force" -ForegroundColor Cyan
+                    Write-Host "iwr https://raw.githubusercontent.com/rbreaves/kinto/master/install/windows.ps1 -UseBasicParsing | iex" -ForegroundColor Cyan
                 }
             }
-
-            Write-Host "✅ Loaded $($apps.Count) applications from common configuration" -ForegroundColor Green
+            else {
+                Write-Warning "Could not initialize winget. Skipping application installation."
+            }
         }
-        catch {
-            Write-Warning "Failed to load common configuration: $($_.Exception.Message)"
-            Write-Host "Falling back to inline application list..." -ForegroundColor Yellow
-            $apps = @()  # Will trigger fallback below
+        else {
+            Write-Warning "WingetApps module not found at: $wingetModulePath"
+            Write-Host "Please ensure the WingetApps.ps1 module exists in the modules directory." -ForegroundColor Yellow
         }
-    }
-
-    # Fallback to inline list if common config failed or doesn't exist
-    if ($apps.Count -eq 0) {
-        Write-Host "Using fallback application list..." -ForegroundColor Yellow
-        $apps = @(
-            # Browsers
-            @{Name = "Google Chrome"; Id = "Google.Chrome" },
-            @{Name = "Mozilla Firefox"; Id = "Mozilla.Firefox" },
-            @{Name = "Brave Browser"; Id = "Brave.Brave" },
-
-            # Development Tools
-            @{Name = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode" },
-            @{Name = "Git"; Id = "Git.Git" },
-            @{Name = "Windows Terminal"; Id = "Microsoft.WindowsTerminal" },
-
-            # Productivity Tools
-            @{Name = "7-Zip"; Id = "7zip.7zip" },
-            @{Name = "VLC Media Player"; Id = "VideoLAN.VLC" },
-            @{Name = "LibreOffice"; Id = "TheDocumentFoundation.LibreOffice" },
-
-            # Communication
-            @{Name = "Discord"; Id = "Discord.Discord" },
-            @{Name = "Zoom"; Id = "Zoom.Zoom" },
-
-            # Utilities
-            @{Name = "PowerToys"; Id = "Microsoft.PowerToys" },
-            @{Name = "ShareX"; Id = "ShareX.ShareX" },
-            @{Name = "Google Drive"; Id = "Google.GoogleDrive" },
-            @{Name = "Synology Drive Client"; Id = "Synology.DriveClient" },
-            @{Name = "Apple iCloud"; Id = "Apple.iCloud" },
-            @{Name = "Calibre"; Id = "calibre.calibre" },
-            @{Name = "Steam"; Id = "Valve.Steam" },
-            @{Name = "ExpressVPN"; Id = "ExpressVPN.ExpressVPN" },
-            @{Name = "Logseq"; Id = "Logseq.Logseq" },
-            @{Name = "Notion"; Id = "Notion.Notion" }
-        )
-    }
-
-    # Install each application
-    foreach ($app in $apps) {
-        Write-Host "Installing $($app.Name)..." -ForegroundColor Green
-        try {
-            winget install --id $app.Id --silent --accept-package-agreements --accept-source-agreements
-            Write-Host "$($app.Name) installed successfully!" -ForegroundColor Green
-        }
-        catch {
-            Write-Warning "Failed to install $($app.Name): $($_.Exception.Message)"
-        }
-    }
-
-    # Install Kinto (Mac-style keyboard shortcuts for Windows)
-    Write-Host "`nInstalling Kinto (Mac-style keyboard shortcuts)..." -ForegroundColor Yellow
-    try {
-        Write-Host "Kinto provides Mac-style keyboard shortcuts for Windows..." -ForegroundColor Cyan
-        Write-Host "This will enable familiar shortcuts like Cmd+C, Cmd+V, Cmd+Tab, etc." -ForegroundColor Cyan
-
-        # Download and execute Kinto installation script
-        $kintoInstallScript = "Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://raw.githubusercontent.com/rbreaves/kinto/master/install/windows.ps1 -UseBasicParsing | iex"
-
-        Write-Host "Downloading and installing Kinto..." -ForegroundColor Green
-        Invoke-Expression $kintoInstallScript
-
-        Write-Host "Kinto installed successfully!" -ForegroundColor Green
-        Write-Host "After restart, Kinto will provide Mac-style keyboard shortcuts." -ForegroundColor Cyan
-        Write-Host "You can access Kinto settings from the system tray." -ForegroundColor Cyan
     }
     catch {
-        Write-Warning "Failed to install Kinto: $($_.Exception.Message)"
-        Write-Host "You can manually install Kinto later by running:" -ForegroundColor Yellow
-        Write-Host "Set-ExecutionPolicy Bypass -Scope Process -Force" -ForegroundColor Cyan
-        Write-Host "iwr https://raw.githubusercontent.com/rbreaves/kinto/master/install/windows.ps1 -UseBasicParsing | iex" -ForegroundColor Cyan
+        Write-Warning "Failed to run application installation: $($_.Exception.Message)"
     }
 } # End of Applications section
 
