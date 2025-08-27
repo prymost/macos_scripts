@@ -2,55 +2,49 @@
 set -uo pipefail
 IFS=$'\n\t'
 
-# Install packages and applications using common configuration
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-COMMON_CONFIG_PATH="${SCRIPT_DIR}/../../../common/apps.json"
-
 echo "📦 Installing development tools and applications..."
 
-# Check if common config exists and jq is available
-if [[ -f "$COMMON_CONFIG_PATH" ]] && command -v jq &> /dev/null; then
-    echo "🔧 Reading package list from common configuration..."
+# Define package lists by category
+CLI_TOOLS=(
+    "git"
+    "jq"
+    "bat"
+    "direnv"
+    "micro"
+    "awscli"
+)
 
-    # Extract CLI tools for WSL Ubuntu
-    CLI_PACKAGES=($(jq -r '.categories.cli_tools.apps | to_entries[] | select(.value.wsl_ubuntu != null) | .value.wsl_ubuntu' "$COMMON_CONFIG_PATH"))
+DEVELOPMENT_TOOLS=(
+    "docker.io"
+    "rbenv"
+    "ruby-build"
+    "pipenv"
+    "zsh"
+    "zsh-autosuggestions"
+)
 
-    # Extract language tools for WSL Ubuntu
-    LANGUAGE_PACKAGES=($(jq -r '.categories.languages.apps | to_entries[] | select(.value.wsl_ubuntu != null) | .value.wsl_ubuntu' "$COMMON_CONFIG_PATH"))
+WSL_SPECIFIC=(
+    "kubectl"
+    "keychain"
+)
 
-    # Extract WSL Ubuntu-specific packages
-    WSL_UBUNTU_ONLY_PACKAGES=($(jq -r '.platform_specific.wsl_ubuntu_only[]?' "$COMMON_CONFIG_PATH"))
+# Combine all packages
+ALL_PACKAGES=(
+    "${CLI_TOOLS[@]}"
+    "${DEVELOPMENT_TOOLS[@]}"
+    "${WSL_SPECIFIC[@]}"
+)
 
-    # Combine all packages
-    ALL_PACKAGES=("${CLI_PACKAGES[@]}" "${LANGUAGE_PACKAGES[@]}" "${WSL_UBUNTU_ONLY_PACKAGES[@]}")
-
-    echo "✅ Loaded ${#ALL_PACKAGES[@]} packages from common configuration"
-
-elif [[ -f "$COMMON_CONFIG_PATH" ]] && ! command -v jq &> /dev/null; then
-    echo "⚠️  Common configuration found but jq not available"
-    echo "📦 Installing jq first..."
-    sudo apt update
-    sudo apt install -y jq
-    # Recursively call this script to reprocess with jq
-    exec "$0"
-
-else
-    echo "📋 Using fallback package list..."
-    # Fallback package list
-    ALL_PACKAGES=(
-        "jq" "bat" "direnv" "micro" "keychain" "kubectl"
-        "git" "rbenv" "ruby-build" "pipenv"
-    )
-fi
+echo "📦 Installing ${#ALL_PACKAGES[@]} packages..."
 
 # APT packages installation
 echo "📋 Installing APT packages..."
-sudo apt update
+sudo apt update -qq
 
 # Install packages in batches to handle potential failures
 for package in "${ALL_PACKAGES[@]}"; do
     echo "Installing $package..."
-    if sudo apt install -y "$package"; then
+    if sudo apt install -y -qq "$package"; then
         echo "✅ $package installed successfully"
     else
         echo "⚠️  Failed to install $package, continuing..."
