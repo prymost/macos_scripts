@@ -35,6 +35,7 @@ All scripts are designed to be platform-specific, simple, and maintainable witho
 - [windows/README.md](windows/README.md) - Windows 11 bootstrap with interactive menu
 - [windows/wsl_scripts/README.md](windows/wsl_scripts/README.md) - WSL Ubuntu development environment
 - [linux/debian/README.md](linux/debian/README.md) - PopOS/Debian desktop setup (coming soon)
+- [shared/](shared/) - Shared configuration templates (currently .zshrc for macOS)
 
 ## Supported Platforms
 

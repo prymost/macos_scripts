@@ -19,7 +19,7 @@ My pesonal scripts for setting up and maintaining a new MacBook with my preferre
 - **`bootstrap.sh`** - Main entry point that orchestrates the entire setup
 - **`check_compatibility.sh`** - Validates system compatibility before setup
 - **`setup/initial.sh`** - Installs Xcode tools, Homebrew, and core utilities
-- **`setup/my_installs.sh`** - Uses static Brewfile to install applications
+- **`setup/my_installs.sh`** - Uses static Brewfile to install applications and configures zsh with shared .zshrc template
 - **`setup/configure_osx.sh`** - Configures macOS system preferences
 - **`setup/restore.sh`** - Restores backed-up configuration files
 

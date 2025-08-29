@@ -28,6 +28,16 @@ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-doctor | 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
+# Copy custom .zshrc configuration
+SHARED_ZSHRC="${SCRIPT_DIR}/../../shared/.zshrc"
+if [[ -f "$SHARED_ZSHRC" ]]; then
+    echo "📝 Installing custom .zshrc configuration..."
+    cp "$SHARED_ZSHRC" "$HOME/.zshrc"
+    echo "✅ Custom .zshrc installed"
+else
+    echo "⚠️  Shared .zshrc not found at $SHARED_ZSHRC"
+fi
+
 # Zrefresh
 # source ~/.zshrc
 
