@@ -1,11 +1,13 @@
 # If you come from bash you might have to change your $PATH.
-# Modern Homebrew path handling for both Intel and Apple Silicon
-if [[ $(uname -m) == "arm64" ]]; then
-    # Apple Silicon
-    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-else
-    # Intel
-    export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+# Modern Homebrew path handling for both Intel and Apple Silicon (macOS only)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [[ $(uname -m) == "arm64" ]]; then
+        # Apple Silicon
+        export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+    else
+        # Intel
+        export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+    fi
 fi
 
 export PATH=$HOME/bin:$PATH
@@ -84,7 +86,18 @@ DISABLE_UPDATE_PROMPT="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git aws docker zsh-autosuggestions)
+
+# Platform-specific plugin configurations
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS plugins
+    plugins=(git aws docker zsh-autosuggestions)
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux plugins (includes WSL)
+    plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker python pip ruby rbenv)
+else
+    # Default plugins
+    plugins=(git zsh-autosuggestions)
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -135,3 +148,29 @@ export PIPENV_VENV_IN_PROJECT=true
 
 # Hook up direnv
 eval "$(direnv hook zsh)"
+
+# Enhanced history configuration for all platforms
+export HISTSIZE=10000
+export SAVEHIST=10000
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+
+# Platform-specific configurations
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux/WSL specific configurations
+
+    # WSL specific aliases and functions
+    if grep -q Microsoft /proc/version 2>/dev/null; then
+        # WSL-specific configurations
+        alias open='explorer.exe'
+        alias code-here='code .'
+        alias winhome='cd /mnt/c/Users/$USER'
+
+        # Windows integration
+        export BROWSER='/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'
+    fi
+fi

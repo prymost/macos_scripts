@@ -113,37 +113,30 @@ if command -v zsh &> /dev/null; then
         git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-        # Configure .zshrc with agnoster theme (similar to article setup)
-        echo "🎨 Configuring Zsh with agnoster theme for Solarized Dark..."
-        sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc
-        sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker python pip ruby rbenv)/' ~/.zshrc
-        # Add agnoster theme configuration for clean prompt
-        echo "" >> ~/.zshrc
-        echo "# Solarized Dark terminal configuration" >> ~/.zshrc
-        echo "DEFAULT_USER=\"\$USER\"" >> ~/.zshrc
-        echo "# Hide user@hostname for cleaner prompt" >> ~/.zshrc
-        echo "prompt_context() {" >> ~/.zshrc
-        echo "  if [[ \"\$USER\" != \"\$DEFAULT_USER\" || -n \"\$SSH_CLIENT\" ]]; then" >> ~/.zshrc
-        echo "    prompt_segment black default \"%(!.%{%F{yellow}%}.)%n@%m\"" >> ~/.zshrc
-        echo "  fi" >> ~/.zshrc
-        echo "}" >> ~/.zshrc
-        # Add some useful Oh My Zsh configurations
-        echo "" >> ~/.zshrc
-        echo "# Oh My Zsh configuration improvements" >> ~/.zshrc
-        echo "DISABLE_UPDATE_PROMPT=true" >> ~/.zshrc
-        echo "COMPLETION_WAITING_DOTS=true" >> ~/.zshrc
-        echo "HIST_STAMPS=\"yyyy-mm-dd\"" >> ~/.zshrc
-
-        # Configure agnoster theme settings
-        echo "" >> ~/.zshrc
-        echo "# Agnoster theme configuration" >> ~/.zshrc
-        echo "DEFAULT_USER=\"\$USER\"" >> ~/.zshrc
-        echo "prompt_context() {}" >> ~/.zshrc  # Hide user@hostname if it's your default user
+        # Copy shared .zshrc configuration
+        SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+        SHARED_ZSHRC="${SCRIPT_DIR}/../../../shared/.zshrc"
+        if [[ -f "$SHARED_ZSHRC" ]]; then
+            echo "📝 Installing shared .zshrc configuration..."
+            cp "$SHARED_ZSHRC" "$HOME/.zshrc"
+            echo "✅ Shared .zshrc installed"
+        else
+            echo "⚠️  Shared .zshrc not found at $SHARED_ZSHRC, using default configuration"
+            # Fallback to basic agnoster configuration
+            sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' ~/.zshrc
+            sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker python pip ruby rbenv)/' ~/.zshrc
+        fi
 
     else
         echo "✅ Oh My Zsh already installed"
-        # Still update the theme if it's not agnoster
-        if ! grep -q 'ZSH_THEME="agnoster"' ~/.zshrc; then
+        # Check if we should update to use shared .zshrc
+        SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+        SHARED_ZSHRC="${SCRIPT_DIR}/../../../shared/.zshrc"
+        if [[ -f "$SHARED_ZSHRC" ]]; then
+            echo "📝 Updating to shared .zshrc configuration..."
+            cp "$SHARED_ZSHRC" "$HOME/.zshrc"
+            echo "✅ Shared .zshrc installed"
+        elif ! grep -q 'ZSH_THEME="agnoster"' ~/.zshrc; then
             echo "🎨 Updating theme to agnoster..."
             sed -i 's/ZSH_THEME=".*"/ZSH_THEME="agnoster"/' ~/.zshrc
         fi
